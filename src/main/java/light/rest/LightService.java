@@ -1,12 +1,12 @@
 package light.rest;
 
-import static spark.Spark.get;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static spark.Spark.get;
 
 public class LightService {
 
@@ -17,7 +17,13 @@ public class LightService {
         service.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                // TODO CHECK BAMBOO
+                if (Bamboo.status()) {
+                    greenOn();
+                    redOff();
+                } else {
+                    redOn();
+                    greenOff();
+                }
             }
         }, 1, 1, TimeUnit.MINUTES);
 
